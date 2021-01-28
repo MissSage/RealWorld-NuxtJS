@@ -4,7 +4,7 @@
     <div class="banner">
       <div class="container">
 
-        <h1>{{ article.title }}</h1>
+        <h1>{{ article.btitle }}</h1>
 
         <article-meta :article="article" />
 
@@ -14,10 +14,10 @@
     <div class="container page">
 
       <div class="row article-content">
-        <div class="col-md-12" v-html="article.body"></div>
+        <div class="col-md-12" v-html="article.bcontent"></div>
       </div>
 
-      <hr />
+      <hr/>
 
       <div class="article-actions">
         <article-meta :article="article" />
@@ -27,7 +27,7 @@
 
         <div class="col-xs-12 col-md-8 offset-md-2">
 
-          <article-comments :article="article" />
+          <!-- <article-comments :article="article" /> -->
 
         </div>
 
@@ -42,28 +42,33 @@
 import { getArticle } from '@/api/article'
 import MarkdownIt from 'markdown-it'
 import ArticleMeta from './components/article-meta'
-import ArticleComments from './components/article-comments'
+// import ArticleComments from './components/article-comments'
 
 export default {
   name: 'ArticleIndex',
   async asyncData ({ params }) {
-    const { data } = await getArticle(params.slug)
-    const { article } = data
+    console.log(params)
+    const {data} = await getArticle(params.slug)
+    console.log(data)
+    const article = data.response
     const md = new MarkdownIt()
-    article.body = md.render(article.body)
+    console.log(article.bcontent)
+    // article.bcontent = md.render(article.bcontent)
+    console.log(article.bcontent)
+
     return {
       article
     }
   },
   components: {
     ArticleMeta,
-    ArticleComments
+    // ArticleComments
   },
   head () {
     return {
-      title: `${this.article.title} - RealWorld`,
+      title: `${this.article.btitle} - 咪咪叨`,
       meta: [
-        { hid: 'description', name: 'description', content: this.article.description }
+        { hid: 'description', name: 'description', content: this.article.bRemark }
       ]
     }
   }
@@ -71,5 +76,9 @@ export default {
 </script>
 
 <style>
-
+.container{
+  display: block;
+  width: 80%;
+  height: 100%;
+}
 </style>

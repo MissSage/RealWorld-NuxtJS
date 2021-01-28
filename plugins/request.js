@@ -3,16 +3,16 @@
  */
 
 import axios from 'axios'
-
+import {baseURL} from '../Public/config'
 // 创建请求对象
 export const request = axios.create({
-  baseURL: 'http://realworld.api.fed.lagounews.com'
+  // baseURL: 'http://www.miaojiangjiang.com:90/'
+  baseURL:baseURL
 })
 
 // 通过插件机制获取到上下文对象（query、params、req、res、app、store...）
 // 插件导出函数必须作为 default 成员
 export default ({ store }) => {
-
   // 请求拦截器
   // Add a request interceptor
   // 任何请求都要经过请求拦截器
@@ -20,10 +20,10 @@ export default ({ store }) => {
   request.interceptors.request.use(function (config) {
     // Do something before request is sent
     // 请求就会经过这里
-    const { user } = store.state
-
-    if (user && user.token) {
-      config.headers.Authorization = `Token ${user.token}`
+    const { token } = store.state
+    console.log(config)
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
     }
 
     // 返回 config 请求配置对象
